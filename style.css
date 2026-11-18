@@ -1,0 +1,89 @@
+
+/* ThreatLens - Dark cybersecurity theme */
+
+.stApp {
+    background: #090f1e;
+    color: #e8efff;
+}
+
+.block-container {
+    max-width: 1050px;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #f4f7ff;
+    letter-spacing: -0.5px;
+}
+
+h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+}
+
+/* Form card */
+[data-testid="stForm"] {
+    background: #111c30;
+    border: 1px solid #273b5b;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+/* Input field */
+.stTextInput input {
+    background: #0d1729;
+    color: white;
+    border: 1px solid #344563;
+    border-radius: 10px;
+    min-height: 46px;
+}
+
+.stTextInput input:focus {
+    border-color: #4e91ff;
+    box-shadow: 0 0 0 1px #4e91ff;
+}
+
+/* Buttons */
+.stButton button,
+.stFormSubmitButton button {
+    background: #3478f6;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-weight: 600;
+}
+
+.stButton button:hover,
+.stFormSubmitButton button:hover {
+    background: #5795ff;
+    color: white;
+}
+
+/* Metrics */
+[data-testid="stMetric"] {
+    background: #111c30;
+    border: 1px solid #273b5b;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+/* Expandable sections */
+[data-testid="stExpander"] {
+    background: #101a2c;
+    border: 1px solid #273b5b;
+    border-radius: 12px;
+}
+
+/* Progress indicator */
+.stProgress > div > div {
+    border-radius: 10px;
+}
+
+/* Tables */
+[data-testid="stDataFrame"] {
+    border: 1px solid #273b5b;
+    border-radius: 12px;
+}

@@ -1,0 +1,92 @@
+{
+  "trained_at": "2026-11-18T17:01:57+00:00",
+  "model_name": "Hashed Character N-gram + URL lexical/domain features (SGD logistic)",
+  "best_model": "Hashed Character N-gram + URL lexical/domain features (SGD logistic)",
+  "dataset": {
+    "source_file": "Combined_PhiUSIIL_PhiLegit.csv",
+    "sha256": "9da9a55e5141a776a866507fd7f5c652cbbccc30c5b6677195d7ec8db37fbab4",
+    "raw_rows": 254987,
+    "clean_rows": 254987,
+    "duplicates_removed": 0,
+    "conflicting_removed": 0,
+    "missing_removed": 0,
+    "phishing_count": 119970,
+    "legitimate_count": 135017,
+    "train_rows": 204007,
+    "test_rows": 50980,
+    "test_size": 0.19993176122704295,
+    "unique_domains": 180069,
+    "train_unique_domains": 144055,
+    "test_unique_domains": 36014,
+    "domain_overlap": 0,
+    "split_seed": 81,
+    "train_phishing_rate": 0.47130735710049165,
+    "test_phishing_rate": 0.46724205570812083
+  },
+  "features": {
+    "text": "complete normalized URL hashed character n-grams (3-5)",
+    "numeric": [
+      "url_length",
+      "domain_length",
+      "num_dots",
+      "num_hyphens",
+      "num_subdomains",
+      "has_ip_address",
+      "has_at_symbol",
+      "num_special_chars",
+      "suspicious_keyword_count",
+      "path_length",
+      "num_digits"
+    ],
+    "includes_hostname": true,
+    "includes_path": true,
+    "includes_query": true
+  },
+  "metrics": {
+    "accuracy": 0.903785798352295,
+    "precision": 0.9684481648422408,
+    "recall": 0.8208228379513014,
+    "f1": 0.8885455247790225,
+    "roc_auc": 0.9490678122244769,
+    "confusion_matrix": {
+      "tn": 26523,
+      "fp": 637,
+      "fn": 4268,
+      "tp": 19552
+    },
+    "false_negative_rate": 0.17917716204869857,
+    "classification_report": {
+      "0": {
+        "precision": 0.8613880679419311,
+        "recall": 0.9765463917525773,
+        "f1-score": 0.9153595278769995,
+        "support": 27160.0
+      },
+      "1": {
+        "precision": 0.9684481648422408,
+        "recall": 0.8208228379513014,
+        "f1-score": 0.8885455247790225,
+        "support": 23820.0
+      },
+      "accuracy": 0.903785798352295,
+      "macro avg": {
+        "precision": 0.914918116392086,
+        "recall": 0.8986846148519394,
+        "f1-score": 0.901952526328011,
+        "support": 50980.0
+      },
+      "weighted avg": {
+        "precision": 0.9114110477019424,
+        "recall": 0.903785798352295,
+        "f1-score": 0.9028308979477369,
+        "support": 50980.0
+      }
+    }
+  },
+  "reproducibility": {
+    "random_state": 42,
+    "test_size_target": 0.2,
+    "python_command": "python -m src.train_model --data Combined_PhiUSIIL_PhiLegit.csv",
+    "model_file": "models/best_model.joblib"
+  }
+}

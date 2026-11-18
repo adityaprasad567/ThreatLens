@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Local data and artifacts
+data/threatlens.db
+data/PhiUSIIL_Phishing_URL_Dataset.csv
+data/phiusiil_urls.csv
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

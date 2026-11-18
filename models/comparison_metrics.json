@@ -1,0 +1,51 @@
+{
+  "trained_at": "2026-11-18T18:37:48.752854+00:00",
+  "dataset": "Combined_PhiUSIIL_PhiLegit.csv",
+  "sample_rows": 30000,
+  "train_rows": 23432,
+  "test_rows": 6568,
+  "split": "domain-grouped holdout",
+  "extracted_features": [
+    "url_length",
+    "domain_length",
+    "num_dots",
+    "num_hyphens",
+    "num_subdomains",
+    "uses_https",
+    "has_ip_address",
+    "has_at_symbol",
+    "num_special_chars",
+    "suspicious_keyword_count",
+    "path_length",
+    "num_digits"
+  ],
+  "trained_numeric_features": [
+    "url_length",
+    "domain_length",
+    "num_dots",
+    "num_hyphens",
+    "num_subdomains",
+    "has_ip_address",
+    "has_at_symbol",
+    "num_special_chars",
+    "suspicious_keyword_count",
+    "path_length",
+    "num_digits"
+  ],
+  "excluded_from_training": "uses_https (computed, but excluded to avoid shortcut learning)",
+  "models": {
+    "Logistic Regression": {
+      "accuracy": 0.8521619975639464,
+      "precision": 0.9245596543702227,
+      "recall": 0.7889960294951787,
+      "f1": 0.8514154552410099
+    },
+    "Random Forest (Bagging Ensemble)": {
+      "accuracy": 0.8739342265529841,
+      "precision": 0.957909029192125,
+      "recall": 0.8003403289846852,
+      "f1": 0.8720642768850433
+    }
+  },
+  "note": "Comparison models are separate from the deployed SGD character n-gram classifier."
+}

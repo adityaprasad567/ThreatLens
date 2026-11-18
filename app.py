@@ -46,7 +46,11 @@ if scan:
             else:
                 st.success('✅ URL appears legitimate')
             a, b = st.columns(2)
-            probability = float(result['phishing_probability'])
+            probability = float(result["phishing_probability"])
+            raw_probability = float(result["model_probability"])
+
+            st.write(f"Raw ML probability: {raw_probability:.1%}")
+            st.write(f"Final phishing probability: {probability:.1%}")
             a.metric('Phishing probability', f'{probability:.1%}')
             b.metric('Risk level', result.get('risk_level', 'Unknown'))
             st.progress(max(0., min(1., probability)))

@@ -50,6 +50,7 @@ from .config import (
 from .feature_extraction import (
     MODEL_FEATURE_NAMES,
     normalize_scheme,
+    registered_domain,
 )
 
 from .preprocessing import (
@@ -60,68 +61,13 @@ from .preprocessing import (
 
 TEXT_COLUMN = "host_text"
 
-TWO_PART_SUFFIXES = {
-    "co.uk", "org.uk", "ac.uk", "gov.uk",
-    "co.in", "org.in", "net.in", "ac.in",
-    "gov.in", "edu.in", "com.au", "net.au",
-    "org.au", "edu.au", "co.jp", "co.nz",
-    "co.za", "com.br", "com.cn", "com.mx",
-    "com.sg", "com.tr", "com.pk",
-}
-
-
-# --------------------------------------------------
-# FIND DATASET
-# --------------------------------------------------
-
-def pick_dataset():
-    """Return the preferred available dataset."""
-
-    project_root = Path(__file__).resolve().parent.parent
-
-    candidates = [
-        project_root / "data" / "Combined_PhiUSIIL_PhiLegit.csv",
-        project_root / "data" / "PhiUSIIL_original.csv",
-        project_root / "data" / "PhiLegit-100K.csv",
-    ]
-
-    for path in candidates:
-        if path.is_file():
-            return path
-
-    return None
-
-
-# --------------------------------------------------
-# REGISTERED DOMAIN EXTRACTION
-# --------------------------------------------------
-
+# Use exactly the same Public Suffix List parsing as feature extraction.
 def registrable_domain(url: str) -> str:
-    """Extract an approximate registered domain."""
-
     try:
-        normalized = normalize_scheme(str(url))
-        host = (
-            urlparse(normalized).hostname or ""
-        ).lower().rstrip(".")
-
+        host = (urlparse(normalize_scheme(str(url))).hostname or "").lower()
     except ValueError:
         return str(url)
-
-    labels = host.split(".")
-
-    if len(labels) < 2:
-        return host
-
-    suffix = ".".join(labels[-2:])
-
-    n = 3 if suffix in TWO_PART_SUFFIXES else 2
-
-    return (
-        ".".join(labels[-n:])
-        if len(labels) >= n
-        else host
-    )
+    return registered_domain(host)
 
 
 # --------------------------------------------------
@@ -353,8 +299,7 @@ def train(data_path=None):
             "registrable domain"
         ),
         "domain_extractor": (
-            "built-in common two-part suffix list; "
-            "not a complete Public Suffix List"
+            "tldextract packaged Public Suffix List snapshot"
         ),
     }
 

@@ -11,6 +11,7 @@ from typing import Iterable
 from urllib.parse import urlparse
 
 import pandas as pd
+import tldextract
 
 from .config import MAX_URL_LENGTH
 
@@ -62,13 +63,19 @@ SUSPICIOUS_KEYWORDS = (
     "recover", "validate", "prize", "claim", "winner", "reward", "gift", "bonus",
 )
 
-# Registered domains that sit under a two-part public suffix (e.g. example.co.uk).
-# A tiny hand-made list keeps us dependency-free; it is not exhaustive.
-TWO_PART_SUFFIXES = {
-    "co.uk", "org.uk", "ac.uk", "gov.uk", "co.in", "org.in", "net.in", "ac.in",
-    "gov.in", "edu.in", "com.au", "net.au", "org.au", "edu.au", "co.jp",
-    "co.nz", "co.za", "com.br", "com.cn", "com.mx", "com.sg", "com.tr", "com.pk",
-}
+# Use tldextract's packaged Public Suffix List snapshot. No network calls.
+# Update the tldextract package periodically to refresh suffix rules.
+_SUFFIX_EXTRACTOR = tldextract.TLDExtract(suffix_list_urls=())
+
+
+def registered_domain(host: str) -> str:
+    """Find the registered domain using Public Suffix List rules."""
+    host = host.lower().rstrip(".")
+    if not host or is_ip_host(host):
+        return host
+    result = _SUFFIX_EXTRACTOR(host)
+    return result.top_domain_under_public_suffix or host
+
 
 _DOMAIN_RE = re.compile(
     r"^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z][a-z0-9-]{1,62}$"
@@ -91,19 +98,13 @@ def is_ip_host(host: str) -> bool:
 
 
 def split_host(host: str) -> tuple[str, str]:
-    """Split a hostname into (subdomain_part, registered_domain).
-
-    'login.secure.example.co.uk' -> ('login.secure', 'example.co.uk')
-    """
-    host = host.lower()
-    labels = host.split(".")
-    if is_ip_host(host) or len(labels) <= 2:
+    """Return (subdomain, registered domain) using public suffix rules."""
+    host = host.lower().rstrip(".")
+    if not host or is_ip_host(host):
         return "", host
-    suffix_len = 2 if ".".join(labels[-2:]) in TWO_PART_SUFFIXES else 1
-    registered_len = suffix_len + 1
-    if len(labels) <= registered_len:
-        return "", host
-    return ".".join(labels[:-registered_len]), ".".join(labels[-registered_len:])
+    result = _SUFFIX_EXTRACTOR(host)
+    domain = result.top_domain_under_public_suffix or host
+    return result.subdomain, domain
 
 
 def count_subdomains(host: str) -> int:

@@ -24,6 +24,7 @@ from .feature_extraction import (
     normalize_scheme,
     to_domain_url,
     validate_url,
+    registered_domain,
 )
 
 from .trusted import is_trusted_host
@@ -77,30 +78,8 @@ def get_hostname(url: str) -> str:
 
 
 def get_registered_domain(host: str) -> str:
-    """Approximate registered domain.
-
-    For more accurate handling of public suffixes,
-    use a maintained Public Suffix List library.
-    """
-
-    labels = host.lower().rstrip(".").split(".")
-
-    if len(labels) < 2:
-        return host
-
-    two_part_suffixes = {
-        "co.uk", "org.uk", "ac.uk",
-        "co.in", "org.in", "net.in",
-        "com.au", "net.au",
-        "co.jp", "com.br",
-    }
-
-    suffix = ".".join(labels[-2:])
-
-    if suffix in two_part_suffixes and len(labels) >= 3:
-        return ".".join(labels[-3:])
-
-    return ".".join(labels[-2:])
+    """Return the registered domain using shared Public Suffix List logic."""
+    return registered_domain(host)
 
 
 def has_deceptive_userinfo(url: str) -> bool:
